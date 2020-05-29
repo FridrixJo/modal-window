@@ -1,0 +1,139 @@
+body{
+    background : url(img/town.jpg) no-repeat center top / cover ;
+    height: 800px;
+}
+
+.btn{
+    width: 220px;
+    height: 40px;
+    background-color : white;
+    border: 1px solid rgba(0,0,0,0.2);
+    outline: 0;
+    text-align: center;
+    align-items : center;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: .3s all;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.btn:hover{
+    box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+}
+
+.container{
+    background-color : rgba(0,0,0,0.2);
+    width : 800px;
+    height: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+    color:white;
+}
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background : rgba(0,0,0,0.5);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: none;
+}
+
+.table{
+    width: 700px;
+    height: 400px;
+    margin: 0 auto;
+    background-color : #fff;
+    margin-top: 40px;
+}
+
+form{
+    width: 700px;
+    height: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.esc{
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    color : rgba(0,0,0,0.7);
+    float: right;
+    margin-top: 10px;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding : 0 5px 7px 5px;
+}
+
+.esc:hover{
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+.title{
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    float: left;
+    padding-left: 300px;
+    padding-top: 20px;
+}
+
+input{
+    width: 300px;
+    height: 50px;
+    border: 1px solid rgba(0,0,0,0.5);
+    box-shadow : 0 4px 15px rgba(0,0,0,0.5);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    text-align : center;
+}
+
+.phone{
+    margin-top: 20px;
+}
+
+.input{
+    width: 300px;
+    margin: 0 auto;
+    position: relative;
+    top: 50px;
+}
+
+.send{
+    width: 300px;
+    height: 50px;
+    border: 1px solid rgba(0,0,0,0.5);
+    box-shadow : 0 4px 15px rgba(0,0,0,0.5);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    text-align : center;
+    position: relative;
+    left: 203px;
+    top: 70px;
+    background-color: rgba(0,0,0,0.9);
+    color: #fff;
+     
+}
+
+.btn-dark{
+    background-color : rgba(0,0,0,0.9);
+    color : #fff;
+}
+
+.show{
+    display: block;
+}
+
+.hide{
+    display: none;
+}
