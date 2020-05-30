@@ -4,11 +4,16 @@ let btns = document.querySelectorAll('.btn');
 
     btns.forEach( i => {
         i.addEventListener('click', () => {
-           modal.classList.add('show');
-           modal.classList.remove('hide');
-           document.body.style.overflow = 'hidden';
+           openModal();
         })
     });
+    
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        clearTimeout(timerID);
+    }
 
     function closeModal() {
         modal.classList.remove('show');
@@ -28,4 +33,15 @@ let btns = document.querySelectorAll('.btn');
         if ( e.code === 'Escape' && modal.classList.contains('show')) {
             closeModal();
         }
-    })
+    });
+
+    let timerID = setTimeout(openModal, 5000);
+
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= 899 ) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
