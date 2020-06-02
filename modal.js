@@ -1,4 +1,5 @@
-let btns = document.querySelectorAll('.btn');
+window.addEventListener('DOMContentLoaded', () => {
+    let btns = document.querySelectorAll('.btn');
     modal = document.querySelector('.modal');
     esc = document.querySelector('.esc');
 
@@ -45,3 +46,13 @@ let btns = document.querySelectorAll('.btn');
     }
 
     window.addEventListener('scroll', showModalByScroll);
+
+    const form = document.querySelector('form');
+
+    function postData() {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+        });
+    } postData();
+
+});

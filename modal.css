@@ -53,12 +53,6 @@ body{
     margin-top: 40px;
 }
 
-form{
-    width: 700px;
-    height: 400px;
-    margin: 0 auto;
-    position: relative;
-}
 
 .esc{
     font-size: 24px;
@@ -96,17 +90,18 @@ input{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     text-align : center;
+    margin-top: 50px;
+}
+
+.name{
+    position: relative;
+    right: 165px;
 }
 
 .phone{
-    margin-top: 20px;
-}
-
-.input{
-    width: 300px;
-    margin: 0 auto;
     position: relative;
-    top: 50px;
+    left: 198.5px;
+    bottom: 20px;
 }
 
 .send{
@@ -117,9 +112,8 @@ input{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     text-align : center;
-    position: relative;
-    left: 203px;
-    top: 70px;
+    display: block;
+    margin: 0 auto;
     background-color: rgba(0,0,0,0.9);
     color: #fff;
      
@@ -136,4 +130,16 @@ input{
 
 .hide{
     display: none;
+}
+
+.status{
+    width: 400px;
+    height: 30px;
+    background-color: #fff;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 100;
+    margin-top: 30px;
 }
