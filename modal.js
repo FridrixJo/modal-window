@@ -49,9 +49,48 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const form = document.querySelector('form');
 
+    const message = {
+        loading: 'loading...',
+        success: 'thanks, soon we will connect with you',
+        failure: 'something went wrong'
+    }
+
     function postData() {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            
+            request.setRequestHeader('Content-type', 'application/json');
+            const formData = new FormData(form);
+
+            const object = {};
+            formData.forEach(function(value,key){
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+            
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if ( request.status === 200 ) {
+                    statusMessage.textContent = message.success;
+                    form.reset();
+                    setTimeout( () => {
+                        statusMessage.remove();
+                    },2000);
+                    console.log(request.response);
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            })
         });
     } postData();
 
