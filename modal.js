@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let timerID = setTimeout(openModal, 5000);
 
     function showModalByScroll() {
-        if (window.pageYOffset + document.documentElement.clientHeight >= 899 ) {
+        if (window.pageYOffset + document.documentElement.clientHeight >= 2000 ) {
             openModal();
             window.removeEventListener('scroll', showModalByScroll);
         }
