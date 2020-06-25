@@ -15,14 +15,16 @@
         <button class="btn btn-dark">click</button>
     </div>
     <div class="modal">
-        <div class="table">
-            <form action="#">
-            <div class="esc">&times;</div>
-            <div class="title">hello</div>
-            <input  required placeholder="your name" name="name" type="text" class="name"><br>
-            <input  required placeholder="your phone number" name="phone" type="text" class="phone">
-            <button class="send">send</button>
-            </form>
+        <div class="modal__dialog">
+            <div class="modal__content">
+               <form action="#">
+                  <div class="esc" data-close>&times;</div>
+                  <div class="title">hello</div>
+                  <input  required placeholder="your name" name="name" type="text" class="name"><br>
+                  <input  required placeholder="your phone number" name="phone" type="text" class="phone">
+                  <button class="send">send</button>
+               </form>
+            </div>
         </div>
     </div>
     <script src="modal.js"></script>
