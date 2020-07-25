@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
-    let btns = document.querySelectorAll('.btn');
-    modal = document.querySelector('.modal');
+    let btns = document.querySelectorAll('.btn'),
+    modal = document.querySelector('.modal'),
+    container1 = document.querySelector('.container1');
 
     btns.forEach(i => {
         i.addEventListener('click', () => {
@@ -13,6 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('hide');
         document.body.style.overflow = 'hidden';
         clearTimeout(timerID);
+        container1.style.right = '16px';
         window.removeEventListener('scroll', showModalByScroll);
     }
 
@@ -37,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let timerID = setTimeout(openModal, 50000);
 
     function showModalByScroll() {
-        if (window.pageYOffset + document.documentElement.clientHeight >= 2000) {
+        if (window.pageYOffset + document.documentElement.clientHeight >= 3000) {
             openModal();
             window.removeEventListener('scroll', showModalByScroll);
         }
@@ -53,7 +55,19 @@ window.addEventListener('DOMContentLoaded', () => {
         failure: 'something went wrong'
     }
 
-    function postData() {
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+
+        return await res.json();
+    }
+
+    function bindPostData() {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
 
@@ -67,21 +81,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(form);
 
-            const object = {};
-            formData.forEach(function (value, key) {
-                object[key] = value;
-            });
+           const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            const json = JSON.stringify(object);
-
-            fetch('server.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(object)
-                })
-                .then(data => data.text())
+            postData('http://localhost:3000/requests', json)
                 .then(data => {
                     console.log(data);
                     showThanksModal(message.success);
@@ -94,7 +96,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 })
         });
     }
-    postData();
+    bindPostData();
 
     function showThanksModal(message) {
         const prevModalContant = document.querySelector('.modal__dialog');
@@ -120,5 +122,232 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
 
     }
+
+    fetch('db.json')
+        .then(data => data.json())
+        .then(res => console.log(res));
+
+    //tabs
+
+    const tabs = document.querySelectorAll('.tabheader__item'),
+    tabsContent = document.querySelectorAll('.tabcontent'),
+    tabsParent = document.querySelector('.tabheader__items');
+
+    function hideTabContent() {
+        tabsContent.forEach( item => {
+            item.classList.add('hide');
+            item.classList.remove('show', 'fade');
+        });
+        tabs.forEach( item => {
+        item.classList.remove('tabheader__item_active');
+        });
+    }
+
+    function showTabContent(i) {
+        tabsContent[i].classList.add('show', 'fade');
+        tabsContent[i].classList.remove('hide');
+        tabs[i].classList.add('tabheader__item_active');
+    }
+
+    tabsParent.addEventListener('click', (event) => {
+        const target = event.target;
+
+        if ( target && target.classList.contains('tabheader__item')) {
+            tabs.forEach( (item, i) => {
+                if ( target == item ) {
+                    hideTabContent();
+                    showTabContent(i);
+                }
+            });
+        }
+    });
+
+    hideTabContent();
+    showTabContent(0);
+
+
+    const getResource = async (url, data) => {
+        const res = await fetch(url);
+ 
+        
+
+        if(!res.ok) {
+            throw new Error(`could not fetch ${url}, status: ${res.status}`);
+        }
+
+        return await res.json();
+    };
+
+    //getResource('http://localhost:3000/menu')
+    //    .then(data => {
+    //        data.forEach(({img,altimg,title,descr,price}) => {
+    //            new MenuCard(img,altimg,title,descr,price, '.container').render();
+    //        });
+    //    });
+
+    axios.get('http://localhost:3000/menu')
+         .then(data => {
+            data.forEach(({img,altimg,title,descr,price}) => {
+                new MenuCard(img,altimg,title,descr,price, '.container').render();
+                });
+         });
+
+    class MenuCard {
+        constructor(scr, alt, title, descr, price, parentSelector ) {
+            this.scr = scr;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 75;
+            this.changeToUsd();
+        }
+    
+        changeToUsd() {
+            this.price = (this.price / this.transfer).toFixed(2);
+        }
+        
+        render() {
+            const element = document.createElement('div');
+            element.innerHTML = `
+            <div class="card">
+                 <div class="img">
+                     <img src=${this.scr} alt=${this.alt}>
+                 </div>
+                 <div class="title2">
+                     <p>${this.title}</p>
+                 </div>
+                 <div class="text">
+                     <h4>${this.descr}
+                     </h4>  
+                 </div>
+                 <hr>
+                 <p id="cost">Цена:</p>
+                 <p id="num"><span>${this.price}</span>usd/день</p>
+            </div>
+        `;    
+            this.parent.append(element);
+        }
+    
+    }
+
+    //slider
+
+        const slides = document.querySelectorAll('.offer__slide'),
+              prev = document.querySelector('.offer__slider-prev'),
+              next = document.querySelector('.offer__slider-next'),
+              total = document.querySelector('#total'),
+              current = document.querySelector('#current');
+        let slideIndex = 1;
+
+        showSlides(slideIndex);
+
+        if (slides.length < 10) {
+            total.textContent = `0${slides.length}`;
+        } else {
+            total.textContent = slides.length;
+        }
+
+        function showSlides(n) {
+            if (n > slides.length) {
+                slideIndex = 1;
+            }
+
+            if (n < 1) {
+                slideIndex = slides.length;
+            }
+
+            slides.forEach( item  => item.style.display = 'none');
+
+            slides[slideIndex - 1].style.display = 'block';
+
+            if (slides.length < 10) {
+                current.textContent = `0${slideIndex}`;
+            } else {
+                total.textContent = slideIndex;
+            }
+        }
+
+        function plusSlides(n) {
+            showSlides( slideIndex += n );
+        }
+
+        prev.addEventListener('click', () => {
+             plusSlides(-1);
+        });
+
+        next.addEventListener('click', () => {
+            plusSlides(+1);
+       });
+
+       // merry-go-round
+
+       const pictures = document.querySelectorAll('.merry-go-round__img'),
+              left = document.querySelector('.merry-go-round__left'),
+              right = document.querySelector('.merry-go-round__right'),
+              now = document.querySelector('#now'),
+              all = document.querySelector('#all'),
+              picturesWrapper = document.querySelector('.merry-go-round__wrapper'),
+              picturesField = document.querySelector('.merry-go-round__wrapper__inner'),
+              width = window.getComputedStyle(picturesWrapper).width;
+
+        let pictureIndex = 1,
+            offset = 0;
+
+            if (pictures.length < 10) {
+                all.textContent = `0${pictures.length}`;
+                now.textContent = `0${pictureIndex}`;
+            } else {
+                all.textContent = pictures.length;
+                now.textContent = pictureIndex;
+            }
+
+        picturesField.style.width = 100 * pictures.length + '%';
+        pictures.forEach(item => {
+            item.style.width = width;
+        });
+
+        right.addEventListener('click', () => {
+            if (offset == +width.slice(0, width.length - 2) * (pictures.length - 1)) {
+               offset = 0;
+            }else {
+                offset += +width.slice(0, width.length - 2);
+            }
+            picturesField.style.transform = `translateX(-${offset}px)`;
+
+            if ( pictureIndex == pictures.length ) {
+                pictureIndex = 1;
+            }else{
+                pictureIndex++;
+            }
+
+            if (pictures.length < 10) {
+                now.textContent = `0${pictureIndex}`;
+            }else{
+                now.textContent = pictureIndex;
+            }
+        });
+
+        left.addEventListener('click', () => {
+            if (offset == 0) {
+                offset = +width.slice(0, width.length - 2) * (pictures.length - 1);
+            }else {
+                offset -= +width.slice(0, width.length - 2);
+            }
+            picturesField.style.transform = `translateX(-${offset}px)`;
+
+            if ( pictureIndex == 1 ) {
+                pictureIndex = pictures.length;
+            }else{
+                pictureIndex--;
+            }
+
+            if (pictures.length < 10) {
+                now.textContent = `0${pictureIndex}`;
+            }else{
+                now.textContent = pictureIndex;
+            }
+        });
 
 });
