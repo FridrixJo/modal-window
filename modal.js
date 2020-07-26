@@ -350,4 +350,85 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+
+
+
+        const photos = document.querySelectorAll('.tank__img'),
+              previous = document.querySelector('.carousel__previous'),
+              following = document.querySelector('.carousel__next'),
+              actual = document.querySelector('#actual'),
+              quanity = document.querySelector('#quanity'),
+              photosWrapper = document.querySelector('.carousel__wrapper'),
+              photosField = document.querySelector('.carousel__wrapper__inner'),
+              breadth = window.getComputedStyle(photosWrapper).width;
+
+        let photoIndex = 1,
+            dislocation = 0;
+
+            if (photos.length < 10) {
+                quanity.textContent = `0${photos.length}`;
+                actual.textContent = `0${photoIndex}`;
+            } else {
+                quanity.textContent = photos.length;
+                actual.textContent = photoIndex;
+            }
+
+            if (photoIndex < 10) {
+                actual.textContent = `0${photoIndex}`;
+            }
+
+            photosField.style.width = 100 * photos.length + '%';
+            photos.forEach(item => {
+            item.style.width = breadth;
+        });
+
+        following.addEventListener('click', () => {
+            if (dislocation == +breadth.slice(0, breadth.length - 2) * (photos.length - 1)) {
+                dislocation = 0;
+            }else {
+                dislocation += +breadth.slice(0, breadth.length - 2);
+            }
+            photosField.style.transform = `translateX(-${dislocation}px)`;
+
+            if ( photoIndex == photos.length ) {
+                photoIndex = 1;
+            }else{
+                photoIndex++;
+            }
+
+            if (photos.length < 10) {
+                actual.textContent = `0${photoIndex}`;
+            }else{
+                actual.textContent = photoIndex;
+            }
+            if (photoIndex < 10) {
+                actual.textContent = `0${photoIndex}`;
+            }
+        });
+
+        previous.addEventListener('click', () => {
+            if (dislocation == 0) {
+                dislocation = +breadth.slice(0, breadth.length - 2) * (photos.length - 1);
+            }else {
+                dislocation -= +breadth.slice(0, breadth.length - 2);
+            }
+            photosField.style.transform = `translateX(-${dislocation}px)`;
+
+            if ( photoIndex == 1 ) {
+                photoIndex = photos.length;
+            }else{
+                photoIndex--;
+            }
+
+            if (photos.length < 10) {
+                actual.textContent = `0${photoIndex}`;
+            }else{
+                actual.textContent = photoIndex;
+            }
+            if (photoIndex < 10) {
+                actual.textContent = `0${photoIndex}`;
+            }
+        });
+
+
 });
