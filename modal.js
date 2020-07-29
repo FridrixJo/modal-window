@@ -354,6 +354,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
         const photos = document.querySelectorAll('.tank__img'),
+              carousel = document.querySelector('.carousel'),
               previous = document.querySelector('.carousel__previous'),
               following = document.querySelector('.carousel__next'),
               actual = document.querySelector('#actual'),
@@ -361,6 +362,25 @@ window.addEventListener('DOMContentLoaded', () => {
               photosWrapper = document.querySelector('.carousel__wrapper'),
               photosField = document.querySelector('.carousel__wrapper__inner'),
               breadth = window.getComputedStyle(photosWrapper).width;
+
+              const indicators = document.createElement('ol'),
+                    dots = [];
+              indicators.classList.add('carousel-indicators');
+              carousel.append(indicators);
+
+              for (let i = 0; i < photos.length; i++) {
+                  const dot = document.createElement('li');
+                  dot.setAttribute('data-slide-to', i + 1);
+                  dot.classList.add('dot');
+
+                if (i == 0) {
+                    dot.style.opacity = 1;
+                }
+
+                  indicators.append(dot);
+                  dots.push(dot);
+              }
+              
 
         let photoIndex = 1,
             dislocation = 0;
@@ -404,6 +424,10 @@ window.addEventListener('DOMContentLoaded', () => {
             if (photoIndex < 10) {
                 actual.textContent = `0${photoIndex}`;
             }
+
+            dots.forEach(dot => dot.style.opacity = '.5');
+            dots[photoIndex - 1].style.opacity = 1;
+
         });
 
         previous.addEventListener('click', () => {
@@ -428,6 +452,35 @@ window.addEventListener('DOMContentLoaded', () => {
             if (photoIndex < 10) {
                 actual.textContent = `0${photoIndex}`;
             }
+
+            dots.forEach(dot => dot.style.opacity = '.5');
+            dots[photoIndex - 1].style.opacity = 1;
+
+
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const slideTo = e.target.getAttribute('data-slide-to');
+
+                photoIndex = slideTo;
+                dislocation = +breadth.slice(0, breadth.length - 2) * (slideTo - 1);
+
+                photosField.style.transform = `translateX(-${dislocation}px)`;
+
+                dots.forEach(dot => dot.style.opacity = '.5');
+                dots[photoIndex - 1].style.opacity = 1;
+
+                if (photos.length < 10) {
+                    actual.textContent = `0${photoIndex}`;
+                }else{
+                    actual.textContent = photoIndex;
+                }
+                if (photoIndex < 10) {
+                    actual.textContent = `0${photoIndex}`;
+                }
+    
+            });
         });
 
 
