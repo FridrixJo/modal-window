@@ -402,11 +402,15 @@ window.addEventListener('DOMContentLoaded', () => {
             item.style.width = breadth;
         });
 
+        function deleteNotDigits(str){
+            return +str.replace(/\D/g, '');
+        }
+
         following.addEventListener('click', () => {
-            if (dislocation == +breadth.slice(0, breadth.length - 2) * (photos.length - 1)) {
+            if (dislocation == deleteNotDigits(breadth) * (photos.length - 1)) {
                 dislocation = 0;
             }else {
-                dislocation += +breadth.slice(0, breadth.length - 2);
+                dislocation += deleteNotDigits(breadth);
             }
             photosField.style.transform = `translateX(-${dislocation}px)`;
 
@@ -432,9 +436,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
         previous.addEventListener('click', () => {
             if (dislocation == 0) {
-                dislocation = +breadth.slice(0, breadth.length - 2) * (photos.length - 1);
+                dislocation = deleteNotDigits(breadth) * (photos.length - 1);
             }else {
-                dislocation -= +breadth.slice(0, breadth.length - 2);
+                dislocation -= deleteNotDigits(breadth);
             }
             photosField.style.transform = `translateX(-${dislocation}px)`;
 
@@ -464,7 +468,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 const slideTo = e.target.getAttribute('data-slide-to');
 
                 photoIndex = slideTo;
-                dislocation = +breadth.slice(0, breadth.length - 2) * (slideTo - 1);
+                dislocation = deleteNotDigits(breadth) * (slideTo - 1);
 
                 photosField.style.transform = `translateX(-${dislocation}px)`;
 
